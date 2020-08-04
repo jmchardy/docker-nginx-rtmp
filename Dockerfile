@@ -1,5 +1,6 @@
 ARG NGINX_VERSION=1.16.1
-ARG NGINX_RTMP_VERSION=1.2.1
+ARG NGINX_RTMP_VERSION=1.1.7.10
+ARG WHICH_NGINX_RTMP=sergey-dryabzhinsky
 ARG FFMPEG_VERSION=4.2.2
 
 
@@ -8,6 +9,7 @@ ARG FFMPEG_VERSION=4.2.2
 FROM alpine:3.11 as build-nginx
 ARG NGINX_VERSION
 ARG NGINX_RTMP_VERSION
+ARG WHICH_NGINX_RTMP
 
 # Build dependencies.
 RUN apk add --update \
@@ -36,7 +38,7 @@ RUN cd /tmp && \
 
 # Get nginx-rtmp module.
 RUN cd /tmp && \
-  wget https://github.com/arut/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
+  wget https://github.com/${WHICH_NGINX_RTMP}/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
   tar zxf v${NGINX_RTMP_VERSION}.tar.gz && rm v${NGINX_RTMP_VERSION}.tar.gz
 
 # Compile nginx with nginx-rtmp module.
