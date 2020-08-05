@@ -1,5 +1,5 @@
-ARG NGINX_VERSION=1.16.1
-ARG NGINX_RTMP_VERSION=1.1.7.10
+ARG NGINX_VERSION=1.18.0
+ARG NGINX_RTMP_VERSION=dev
 ARG WHICH_NGINX_RTMP=sergey-dryabzhinsky
 ARG FFMPEG_VERSION=4.2.2
 
@@ -38,8 +38,8 @@ RUN cd /tmp && \
 
 # Get nginx-rtmp module.
 RUN cd /tmp && \
-  wget https://github.com/${WHICH_NGINX_RTMP}/nginx-rtmp-module/archive/v${NGINX_RTMP_VERSION}.tar.gz && \
-  tar zxf v${NGINX_RTMP_VERSION}.tar.gz && rm v${NGINX_RTMP_VERSION}.tar.gz
+  wget https://github.com/${WHICH_NGINX_RTMP}/nginx-rtmp-module/archive/${NGINX_RTMP_VERSION}.tar.gz && \
+  tar zxf ${NGINX_RTMP_VERSION}.tar.gz && rm ${NGINX_RTMP_VERSION}.tar.gz
 
 # Compile nginx with nginx-rtmp module.
 RUN cd /tmp/nginx-${NGINX_VERSION} && \
@@ -159,7 +159,10 @@ COPY --from=build-ffmpeg /usr/lib/libfdk-aac.so.2 /usr/lib/libfdk-aac.so.2
 # Add NGINX path, config and static files.
 ENV PATH "${PATH}:/usr/local/nginx/sbin"
 ADD nginx.conf /etc/nginx/nginx.conf.template
-RUN mkdir -p /opt/data && mkdir /www
+#RUN usermod -u 1000 www-data
+#RUN usermod -G staff www-data
+RUN mkdir -p /opt/data && mkdir /www && mkdir -p /opt/recordings && chmod 777 /opt/recordings #&& chown www-data:root /opt/recordings
+
 ADD static /www/static
 
 EXPOSE 1935
