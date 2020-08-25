@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  nginx-rtmp:
+  jmchardy-nginx-rtmp:
     build: .
     ports:
       - 1935:1935
