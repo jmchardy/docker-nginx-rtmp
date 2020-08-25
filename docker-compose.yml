@@ -12,3 +12,7 @@ services:
       - RTMP_PORT=1935
     volumes:
       - ./certs:/opt/certs
+      - /home/administrator/nginx.321Tag.conf:/etc/nginx/nginx.conf.template
+      - /storage/video_processor_mike/recordings:/opt/recordings:rw
+      - /tmp/nginx-rtmp:/tmp/nginx-rtmp:rw
+      - /storage/video_processor_mike/uploads:/opt/uploads:rw
